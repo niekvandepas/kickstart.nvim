@@ -151,6 +151,16 @@ return {
         detached = vim.fn.has 'win32' == 0,
       },
     }
-    require('dap-python').setup()
+
+  local function get_project_python()
+    return vim.fn.getcwd() .. '/.venv/bin/python'
+  end
+
+  local python_path = get_project_python()
+  if vim.fn.filereadable(python_path) == 0 then
+    python_path = "/Users/niekvdpas/.pyenv/versions/3.10.14/bin/python"
+  end
+
+  require('dap-python').setup(python_path)
   end,
 }
