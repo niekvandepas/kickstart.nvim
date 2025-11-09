@@ -77,6 +77,11 @@ return {
       end,
       desc = 'Debug: See last session result.',
     },
+    {
+      '<leader>t',
+      function() require('dap').terminate() end,
+      desc = 'Debug: Terminate session',
+    },
   },
   config = function()
     local dap = require 'dap'
