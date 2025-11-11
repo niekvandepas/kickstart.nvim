@@ -4,9 +4,9 @@
 -- See the kickstart.nvim README for more information
 return {
   {
-    "marcussimonsen/let-it-snow.nvim",
-    cmd = "LetItSnow", -- Wait with loading until command is run
-    opts = {},
+    'akinsho/bufferline.nvim',
+    version = "*",
+    dependencies = 'nvim-tree/nvim-web-devicons'
   },
   {
     'OXY2DEV/markview.nvim',
