@@ -143,21 +143,20 @@ return {
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
-    -- Install golang specific config
-    require('dap-go').setup {
-      delve = {
-        -- On Windows delve must be run attached or it crashes.
-        -- See https://github.com/leoluz/nvim-dap-go/blob/main/README.md#configuring
-        detached = vim.fn.has 'win32' == 0,
-      },
-    }
-
   local function get_project_python()
-    return vim.fn.getcwd() .. '/.venv/bin/python'
+    local cwd = vim.fn.getcwd()
+    for _, name in ipairs({'.venv', 'venv'}) do
+      local path = cwd .. '/' .. name .. '/bin/python'
+      if vim.fn.filereadable(path) == 1 then
+        vim.notify("Found python at " .. path, vim.log.levels.INFO)
+        return path
+      end
+    end
+    return nil  -- no venv found
   end
 
   local python_path = get_project_python()
-  if vim.fn.filereadable(python_path) == 0 then
+  if not python_path or vim.fn.filereadable(python_path) == 0 then
     python_path = "/Users/niekvdpas/.pyenv/versions/3.10.14/bin/python"
   end
 
