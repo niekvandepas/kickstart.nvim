@@ -125,7 +125,7 @@ vim.o.breakindent = true
 vim.o.wrap = true
 vim.o.linebreak = true
 
-vim.o.showbreak = '↪ '  -- optional
+vim.o.showbreak = ' '
 
 -- Save undo history
 vim.o.undofile = true
