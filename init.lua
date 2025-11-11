@@ -1008,8 +1008,70 @@ require('lazy').setup({
   },
 })
 
+-- NP custom keymaps
 telescope_builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>g', telescope_builtin.live_grep, { desc = '[S]earch by [G]rep' })
 
+-- Copy absolute and relative filepath
+local function buf_abs()
+  return vim.api.nvim_buf_get_name(0)
+end
+
+vim.keymap.set("n", "<leader>nyr", function()
+  local rel = vim.fn.fnamemodify(buf_abs(), ":.")
+   vim.fn.setreg("+", rel)
+  vim.notify("Yanked (relative): " .. rel)
+end, { desc = "Yank relative file path" })
+
+vim.keymap.set("n", "<leader>nya", function()
+  local abs = vim.fn.fnamemodify(buf_abs(), ":p")
+  vim.fn.setreg("+", abs)
+  vim.notify("Yanked (absolute): " .. abs)
+end, { desc = "Yank absolute file path" })
+
+vim.keymap.set("n", "<leader>nyd", function()
+  local dir = vim.fn.fnamemodify(buf_abs(), ":p:h")
+  vim.fn.setreg("+", dir)
+  vim.notify("Yanked (dir): " .. dir)
+end, { desc = "Yank directory path" })
+
+vim.keymap.set("n", "<leader>nyf", function()
+  local name = vim.fn.fnamemodify(buf_abs(), ":t")
+  vim.fn.setreg("+", name)
+  vim.notify("Yanked (filename): " .. name)
+end, { desc = "Yank filename only" })
+
+
+vim.keymap.set('n', '<leader>nt', function()
+  vim.cmd('vert term')
+  vim.cmd('startinsert')
+end, { desc = 'Open vertical terminal in insert mode' })
+-- vim.keymap.set("n", "<leader>nt", ':vert term | startinsert<CR>', { desc = 'Open vertical terminal in insert mode' })
+
+-- Switch between buffers
+vim.keymap.set('n', '<S-l>', ':bnext<CR>', { desc = 'Next buffer' })
+vim.keymap.set('n', '<leader>bn', ':bnext<CR>', { desc = 'Next buffer' })
+vim.keymap.set('n', '<S-h>', ':bprevious<CR>', { desc = 'Previous buffer' })
+vim.keymap.set('n', '<leader>bp', ':bprevious<CR>', { desc = 'Previous buffer' })
+vim.keymap.set('n', '<leader>bd', ':bdelete<CR>', { desc = 'Delete buffer' })
+
+-- Save using <leader>w
+vim.keymap.set('n', '<leader>w', ':w<CR>', { desc = 'Save file' })
+
+-- MarkView split view
+	vim.keymap.set('n', '<leader>ns', ':Markview splitToggle<CR>', { desc = 'Toggle Markview split' })
+
 -- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
+-- vim: ts=2 sts=2 sw=2 
+
+vim.o.showtabline = 2  -- always show buffer line
+
+-- Spaces >>> tabs
+vim.o.expandtab = true      -- use spaces instead of tabs
+vim.o.shiftwidth = 2        -- indentation level for autoindent, >>, <<
+vim.o.tabstop = 2           -- a tab character equals 2 spaces
+vim.o.smartindent = true    -- auto-indent new lines
+
+vim.opt.termguicolors = true
+require("bufferline").setup{}
+
