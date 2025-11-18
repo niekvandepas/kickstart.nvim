@@ -1077,7 +1077,13 @@ vim.keymap.set('n', '<leader>bd', ':bdelete<CR>', { desc = 'Delete buffer' })
 vim.keymap.set('n', '<leader>w', ':w<CR>', { desc = 'Save file' })
 
 -- MarkView split view
-	vim.keymap.set('n', '<leader>ns', ':Markview splitToggle<CR>', { desc = 'Toggle Markview split' })
+vim.keymap.set('n', '<leader>ns', ':Markview splitToggle<CR>', { desc = 'Toggle Markview split' })
+
+-- Type hover
+vim.keymap.set('n', '<leader>k', vim.lsp.buf.hover, { buffer = true })
+
+-- Show diagnostics under cursor
+vim.keymap.set('n', '<leader>nd', vim.diagnostic.open_float, { desc = "Show diagnostics under cursor" })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 
