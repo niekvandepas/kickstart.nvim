@@ -690,8 +690,7 @@ require('lazy').setup({
         -- clangd = {},
         -- gopls = {},
         basedpyright = {},
-        -- rust_analyzer = {},
-        -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
+        rust_analyzer = {},
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
         --    https://github.com/pmizio/typescript-tools.nvim
@@ -761,6 +760,17 @@ require('lazy').setup({
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for ts_ls)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+
+            -- For rust analyzer to link c++ dependencies properly on macOS, we need to
+            -- set the BINDGEN_EXTRA_CLANG_ARGS environment variable to point to the
+            -- correct sysroot.
+            if server_name == "rust_analyzer" then
+              server.on_init = function(client)
+                client.config.env = client.config.env or {}
+                client.config.env.BINDGEN_EXTRA_CLANG_ARGS = "--sysroot=" .. vim.fn.trim(vim.fn.system("xcrun --show-sdk-path"))
+              end
+            end
+
             require('lspconfig')[server_name].setup(server)
           end,
         },
