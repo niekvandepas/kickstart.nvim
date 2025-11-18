@@ -1061,9 +1061,9 @@ end, { desc = "Yank filename only" })
 
 
 vim.keymap.set('n', '<leader>nt', function()
-  vim.cmd('vert term')
+  vim.cmd('term')
   vim.cmd('startinsert')
-end, { desc = 'Open vertical terminal in insert mode' })
+end, { desc = 'Open terminal in insert mode' })
 -- vim.keymap.set("n", "<leader>nt", ':vert term | startinsert<CR>', { desc = 'Open vertical terminal in insert mode' })
 
 -- Switch between buffers
