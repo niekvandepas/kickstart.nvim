@@ -18,6 +18,15 @@ vim.api.nvim_create_autocmd('User', {
 
 return {
   {
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {
+      highlight = {
+        pattern = [[.*<(KEYWORDS)\s*]],
+      },
+    },
+  },
+  {
     "github/copilot.vim"
   },
   {
