@@ -413,11 +413,19 @@ require('lazy').setup({
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
         --
-        -- defaults = {
-        --   mappings = {
-        --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-        --   },
-        -- },
+        defaults = {
+          prompt_prefix = "🔍 ",
+          file_ignore_patterns = {
+            "^%.git/", -- keep .git ignored
+            "^%.idea/",
+            "^%.vscode/",
+            "^%.venv/",
+            "^node_modules/",
+            "^%.cache/",
+            "%.DS_Store$",
+            "%.xml"
+            },
+        },
         -- pickers = {}
         extensions = {
           ['ui-select'] = {
