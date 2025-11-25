@@ -658,7 +658,7 @@ require('lazy').setup({
         } or {},
         virtual_text = {
           source = 'if_many',
-          spacing = 2,
+          spacing = 8,
           format = function(diagnostic)
             local diagnostic_message = {
               [vim.diagnostic.severity.ERROR] = diagnostic.message,
