@@ -660,12 +660,27 @@ require('lazy').setup({
           source = 'if_many',
           spacing = 8,
           format = function(diagnostic)
+            -- Basedpyright shows both a short and a long description split by a newline;
+            -- show only the short description in the virtual text to reduce clutter.
+            if diagnostic.source == "basedpyright" then
+              local short_message = string.match(diagnostic.message, '^([^\n]*)') or diagnostic.message
+              local diagnostic_message = {
+                [vim.diagnostic.severity.ERROR] = short_message,
+                [vim.diagnostic.severity.WARN] = short_message,
+                [vim.diagnostic.severity.INFO] = short_message,
+                [vim.diagnostic.severity.HINT] = short_message,
+              }
+
+              return diagnostic_message[diagnostic.severity]
+            end
+
             local diagnostic_message = {
               [vim.diagnostic.severity.ERROR] = diagnostic.message,
               [vim.diagnostic.severity.WARN] = diagnostic.message,
               [vim.diagnostic.severity.INFO] = diagnostic.message,
               [vim.diagnostic.severity.HINT] = diagnostic.message,
             }
+
             return diagnostic_message[diagnostic.severity]
           end,
         },
@@ -689,7 +704,13 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        basedpyright = {},
+        basedpyright = {
+          disableOrganizeImports = true, -- Let Ruff handle import organization
+          analysis = {
+            reportUnusedImport = false,   -- Let Ruff handle unused imports
+            reportUnusedVariable = false, -- Let Ruff handle unused variables
+          },
+        },
         rust_analyzer = {},
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
