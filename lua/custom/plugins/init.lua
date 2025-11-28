@@ -17,14 +17,26 @@ vim.api.nvim_create_autocmd('User', {
 })
 
 return {
+  -- Disabled because it kept throwing errors
+  -- {
+  --   "folke/todo-comments.nvim",
+  --   dependencies = { "nvim-lua/plenary.nvim" },
+  --   opts = {
+  --     highlight = {
+  --       before = "bg",
+  --       pattern = [[.*<(KEYWORDS)\s*]],
+  --       after = "bg",
+  --     },
+  --   },
+  -- },
   {
-    "folke/todo-comments.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    opts = {
-      highlight = {
-        pattern = [[.*<(KEYWORDS)\s*]],
-      },
+    "nvim-pack/nvim-spectre",
+    keys = {
+      {'<F4>', "<cmd>SpectreWithCWD<cr>",mode={'n'} },
     },
+    config = function()
+      require('spectre').setup({ is_block_ui_break = true })
+    end,
   },
   {
     "github/copilot.vim"

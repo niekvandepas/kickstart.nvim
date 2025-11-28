@@ -857,7 +857,8 @@ require('lazy').setup({
         -- <c-k>: Toggle signature help
         --
         -- See :h blink-cmp-config-keymap for defining your own keymap
-        preset = 'super-tab',
+        preset = 'default',
+        ['<C-e>'] = { 'select_and_accept', 'fallback' },
         completion
 
         -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
@@ -1098,7 +1099,7 @@ vim.keymap.set('n', '<leader>bd', ':bdelete<CR>', { desc = 'Delete buffer' })
 vim.keymap.set('n', '<leader>w', ':w<CR>', { desc = 'Save file' })
 
 -- MarkView split view
-vim.keymap.set('n', '<leader>ns', ':Markview splitToggle<CR>', { desc = 'Toggle Markview split' })
+-- vim.keymap.set('n', '<leader>ns', ':Markview splitToggle<CR>', { desc = 'Toggle Markview split' })
 
 -- Type hover
 vim.keymap.set('n', '<leader>k', vim.lsp.buf.hover, { buffer = true })
@@ -1120,3 +1121,66 @@ vim.o.smartindent = true    -- auto-indent new lines
 vim.opt.termguicolors = true
 require("bufferline").setup{}
 
+-- Disable Copilot
+vim.api.nvim_set_keymap(
+  "n",
+  "<leader>no",
+  ":Copilot disable<CR>",
+  { noremap = true, silent = true }
+)
+
+-- Enable Copilot
+vim.api.nvim_set_keymap(
+  "n",
+  "<leader>nc",
+  ":Copilot enable<CR>",
+  { noremap = true, silent = true }
+)
+
+-- Grep current word under cursor in project using Telescope
+vim.api.nvim_set_keymap(
+  'n',
+  '<leader>ng',
+  [[:lua require('telescope.builtin').live_grep({ default_text = vim.fn.expand("<cword>") })<CR><Esc>]],
+  { noremap = true, silent = true, desc = "Grep word under cursor" }
+)
+
+
+-- Substitute without having to type :%s like an animal
+-- vim.api.nvim_set_keymap(
+--   "n",
+--   "<leader>ns",
+--   ":%s/\\v/<Left><Left><Left>",
+--   { noremap = true }
+-- )
+
+local map = vim.keymap.set
+
+map('n', '<leader>S', function()
+    require('spectre').open()
+end, { desc = 'Spectre: Search & replace in project' })
+
+map('n', '<leader>sw', function()
+    require('spectre').open_visual({ select_word = true })
+end, { desc = 'Spectre: Search word in project' })
+
+map('v', '<leader>sw', function()
+    require('spectre').open_visual()
+end, { desc = 'Spectre: Search visual selection' })
+
+map('n', '<leader>sf', function()
+    require('spectre').open_file_search()
+end, { desc = 'Spectre: Search in current file' })
+
+map('n', '<leader>st', function()
+    require('spectre').toggle()
+end, { desc = 'Spectre: Toggle UI' })
+
+
+map('n', '<leader>d', require('telescope.builtin').lsp_definitions, { desc = 'Go to definiton' })
+
+-- Maintain visual selection after indenting
+-- Indent (Visual Line Mode)
+vim.keymap.set('x', '>', '>gv', { desc = 'Indent and reselect' })
+-- Outdent (Visual Line Mode)
+vim.keymap.set('x', '<', '<gv', { desc = 'Outdent and reselect' })
